@@ -24,14 +24,12 @@ async function TeamsFilter(api, callback) {
             playersComTime.add(team.player2_id);
         });
 
-        const playersSemTime = users.filter(user => !playersComTime.has(user.id));
-
-        const playersComTeam = users.filter(user => playersComTime.has(user.id)).map(player => ({
+        const playersSemTime = users.filter(user => !playersComTime.has(user.id)).map(player => ({
             id: player.id,
             username: player.username
         }));
 
-        const playersSemTeam = playersSemTime.map(player => ({
+        const playersComTeam = users.filter(user => playersComTime.has(user.id)).map(player => ({
             id: player.id,
             username: player.username
         }));
@@ -39,7 +37,7 @@ async function TeamsFilter(api, callback) {
         if (api === 'Y') {
             callback(playersComTeam);
         } else if (api === 'N') {
-            callback(playersSemTeam);
+            callback(playersSemTime);
         }
     } catch (err) {
         console.error('Erro ao consultar jogadores sem time:', err);
