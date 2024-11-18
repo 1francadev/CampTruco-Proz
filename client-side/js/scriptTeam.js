@@ -24,6 +24,7 @@ async function buscarTimes() {
         const response = await fetch('http://localhost:3001/api/teams/ComTimes');
         if (!response.ok) throw new Error('Erro ao buscar times do banco de dados.');
         const teamsFromDB = await response.json();
+        console.log(teamsFromDB)
 
         teams.length = 0;
         teamsFromDB.forEach(team => {
@@ -68,7 +69,7 @@ async function salvarTimeNoBanco(team) {
 }
 
 function renderSemTimes(players) {
-    divSemTime.innerHTML = '<h3>Players without a team</h3>';
+    divSemTime.innerHTML = '<h3>Players sem Time</h3>';
     players.forEach(player => {
         const divPlayer = document.createElement('div');
         divPlayer.classList.add('player');
@@ -79,7 +80,7 @@ function renderSemTimes(players) {
 }
 
 function renderTimes() {
-    divTeams.innerHTML = '<h3>Formed Teams</h3>';
+    divTeams.innerHTML = '<h3>Times Formados</h3>';
     teams.forEach((team, index) => {
         const divTeam = document.createElement('div');
         divTeam.classList.add('teams');
