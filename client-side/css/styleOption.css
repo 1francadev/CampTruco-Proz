@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    background-image: linear-gradient(45deg, #271212 25%, transparent 25%), linear-gradient(-45deg, #271212 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #271212 75%), linear-gradient(-45deg, transparent 75%, #271212 75%);
+    background-size: 50px 50px;
+}
+
+.container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.rectangle {
+    width: 300px;
+    min-height: 500px;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #000000;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    overflow-y: auto;
+    border: 3px solid #d32f2f;
+    position: relative;
+    transition: transform 0.3s;
+}
+
+.rectangle:hover {
+    transform: translateY(-5px);
+}
+
+.rectangle h3 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #d32f2f;
+}
+
+.buttons {
+    transform: scale(1.7);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.button {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.button:hover {
+    background-color: #a62828;
+    transform: scale(1.05);
+}
+
+.player {
+    padding: 8px;
+    background-color: #222222;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    color: #ffffff;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
+}
+
+.player.selected {
+    background-color: #4682b4;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#paired .player {
+    background-color: #444444;
+    color: #d32f2f;
+}
+
+.teams  {
+    padding: 8px;
+    background-color: #222222;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    color: #ffffff;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
+}
+
+.teams .selected {
+    background-color: #4682b4;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#paired .teams  {
+    background-color: #444444;
+    color: #d32f2f;
+}
+
+.input {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #d32f2f;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#inputNomeTime {
+    display: none;
+    width: 200px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #d32f2f;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+#inputNomeTime:focus {
+    border-color: #d32f2f;
+    outline: none;
+}
