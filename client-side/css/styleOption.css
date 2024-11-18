@@ -15,6 +15,19 @@ body {
     background-size: 50px 50px;
 }
 
+#titulo {
+    color: white;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);  /* Sombra para destacar o texto */
+    background-color: #333;  /* Fundo escuro para o título */
+    padding: 10px 20px;  /* Espaçamento interno */
+    border-radius: 8px;  /* Bordas arredondadas */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Sombra suave */
+    display: inline-block;  /* Garantir que o título tenha o tamanho certo */
+    animation: fadeIn 1.5s ease-in-out;  /* Efeito de animação */
+}
+
 .container {
     display: flex;
     gap: 20px;
@@ -49,7 +62,7 @@ body {
 }
 
 .buttons {
-    transform: scale(1.7);
+    transform: scale(1.9);
     display: flex;
     flex-direction: column;
     gap: 20px;
