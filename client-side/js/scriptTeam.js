@@ -29,10 +29,10 @@ async function buscarTimes() {
         teams.length = 0;
         teamsFromDB.forEach(team => {
             teams.push({
-                nome: team.name,
+                nome: team.teamName,
                 members: [
-                    { id: team.id, username: team.username || 'Unknown' },
-                    { id: team.id, username: team.username || 'Unknown' },
+                    { id: team.players, username: team.players.username || 'Unknown' },
+                    { id: team.players.id, username: team.players.username || 'Unknown' },
                 ]
             });
         });

@@ -16,22 +16,35 @@ const handleQuery = (res, query, params, callback) => {
 async function TeamsFilter(api, callback) {
     try {
         const [users] = await db.promise().query('SELECT * FROM users');
-        const [teams] = await db.promise().query('SELECT player1_id, player2_id FROM teams');
+        const [teams] = await db.promise().query('SELECT name, player1_id, player2_id FROM teams');
 
-        const playersComTime = new Set();
+        const userMap = new Map(users.map(user => [user.id, user.username]));
+
+        const playersComTime = [];
+
         teams.forEach(team => {
-            playersComTime.add(team.player1_id);
-            playersComTime.add(team.player2_id);
+            const player1Name = userMap.get(team.player1_id);
+            const player2Name = userMap.get(team.player2_id);            
+
+            playersComTime.push({
+                teamName: team.name,
+                players: [
+                    { id: team.player1_id, username: player1Name },
+                    { id: team.player2_id, username: player2Name }
+                ]
+            });
         });
 
-        const playersSemTime = users.filter(user => !playersComTime.has(user.id)).map(player => ({
+        const playersSemTime = users.filter(user => !playersComTime.some(team =>
+            team.players.some(player => player.id === user.id)
+        )).map(player => ({
             id: player.id,
             username: player.username
         }));
 
-        const playersComTeam = users.filter(user => playersComTime.has(user.id)).map(player => ({
-            id: player.id,
-            username: player.username
+        const playersComTeam = playersComTime.map(team => ({
+            teamName: team.teamName,
+            players: team.players
         }));
 
         if (api === 'Y') {
@@ -43,6 +56,7 @@ async function TeamsFilter(api, callback) {
         console.error('Erro ao consultar jogadores sem time:', err);
     }
 }
+
 
 router.get("/", (req, res) => {
     const query = "SELECT * FROM teams";
@@ -61,6 +75,7 @@ router.get('/SemTime', (req, res) => {
 router.get('/ComTimes', (req, res) => {
     TeamsFilter("Y", players => {
         res.json(players);
+        console.log(JSON.stringify(players, null, 2));
     });
 });
 
