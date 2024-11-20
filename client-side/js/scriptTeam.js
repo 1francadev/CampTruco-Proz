@@ -8,6 +8,16 @@ const confirmar = document.getElementById('confirmar');
 const playersSelected = [];
 let teamIndexSelected = null;
 
+const modoDeJogo = localStorage.getItem('modoDeJogo');
+
+// Verifica se o valor foi recuperado corretamente
+if (modoDeJogo) {
+    console.log("Modo de jogo escolhido: " + modoDeJogo);  // Exibe no console para verificar
+    document.getElementById("modoEscolhido").textContent = `Modo de Jogo: ${modoDeJogo}`;
+} else {
+    console.log("Nenhum modo de jogo foi selecionado.");
+}
+
 async function buscarSemTime() {
     try {
         const response = await fetch('http://localhost:3001/api/teams/SemTime');
@@ -172,6 +182,27 @@ confirmar.addEventListener('click', () => {
         renderTimes();
     }
 });
+
+//modificar essa função quando alterar os modos de jogo;
+
+async function verificarTimesEAvancar() {
+    try {
+        const response = await fetch('http://localhost:3001/api/teams/ComTimes');
+        if (!response.ok) throw new Error('Erro ao buscar times do banco de dados.');
+        const teamsFromDB = await response.json();
+
+        // Verifica o número de times no banco
+        if (teamsFromDB.length === 2 && localStorage.getItem('modoDeJogo') === '2 duplas') {
+            window.location.href = 'gamePage.html'; // Redireciona para a página do jogo
+        } else {
+            alert(`Times encontrados: ${teamsFromDB.length}. Ainda não atingiu o limite para 2 duplas.`);
+        }
+    } catch (erro) {
+        console.error("Erro ao buscar dados das APIs:", erro);
+    }
+}
+
+document.getElementById('comecarJogo').addEventListener('click', verificarTimesEAvancar);
 
 buscarSemTime();
 buscarTimes();

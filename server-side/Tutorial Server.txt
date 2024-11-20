@@ -13,11 +13,11 @@ Cole o codigo do arquivo dbtruco.sql dentro do mysql.
 Agora o arquivo db.js faz a conexão com o banco.
 
     Agora é só iniciarmos o codigo. Coloque a pasta do Codigo na pasta C do computador.
-    Depois coloque no terminal:
-
-    -cd C:\CampTruco-Proz-main\server-side 
-    - node server.js
-
     Toda vez que for rodar, lembre de ter o SQL aberto e o xampp ativado
+
+    Depois coloque no terminal do vs code:
+
+    - cd C:\CampTruco-Proz-main\server-side 
+    - node server.js
 
 Pronto agora é só entrar no client-side e abrir as paginas!
