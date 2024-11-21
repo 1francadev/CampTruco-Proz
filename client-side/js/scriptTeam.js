@@ -210,12 +210,35 @@ document.getElementById('renomearTime').addEventListener('click', () => {
     }
 });
 
-confirmar.addEventListener('click', () => {
+confirmar.addEventListener('click', async () => {
     if (teamIndexSelected !== null && inputNomeTime.value.trim()) {
-        teams[teamIndexSelected].nome = inputNomeTime.value.trim();
-        inputNomeTime.value = '';
-        teamIndexSelected = null;
-        renderTimes();
+        try {
+            const newTeam = inputNomeTime.value.trim();
+            const oldTeam = teams[teamIndexSelected];
+
+            const response = await fetch(`http://localhost:3001/api/teams/${oldTeam.nome}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    newTeam: newTeam,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao modificar o time no banco.');
+            }
+
+            teams[teamIndexSelected].nome = inputNomeTime.value.trim();
+            inputNomeTime.value = '';
+            teamIndexSelected = null;
+
+            renderTimes();
+        } catch (erro) {
+            console.error('Erro ao renomear time:', erro);
+            alert('Erro ao renomear time. Tente novamente');
+        }
     }
 });
 

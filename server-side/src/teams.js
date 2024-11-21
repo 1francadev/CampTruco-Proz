@@ -62,7 +62,7 @@ router.get("/", (req, res) => {
     const query = "SELECT * FROM teams";
     handleQuery(res, query, [], results => {
         res.json(results);
-        console.log("get Teams Used!", results)
+        console.log("get Teams Used!")
     });
 });
 
@@ -75,7 +75,7 @@ router.get('/SemTime', (req, res) => {
 router.get('/ComTimes', (req, res) => {
     TeamsFilter("Y", players => {
         res.json(players);
-        console.log(JSON.stringify(players, null, 2));
+        // console.log(JSON.stringify(players, null, 2));
     });
 });
 
@@ -99,6 +99,19 @@ router.delete("/:name", (req, res) => {
     const params = [name];
     handleQuery(res, query, params, () => {
         res.json({ message: "Dupla excluída com sucesso!" });
+    });
+});
+
+router.put("/:oldTeam", (req, res) => {
+    const { oldTeam } = req.params;
+    const { newTeam } = req.body;
+
+    if (!newTeam || !oldTeam) {
+        return res.status(400).json({ error: 'Nome antigo do time e o novo, está indefinido "NULL"'});
+    }
+
+    handleQuery(res, "UPDATE teams SET name = ? WHERE name = ?", [newTeam, oldTeam], () => {
+        res.json({ data: { success: true, message: 'Time atualizado com sucesso!' } });
     });
 });
 
