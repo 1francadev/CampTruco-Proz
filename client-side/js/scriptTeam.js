@@ -228,7 +228,7 @@ async function verificarTimesEAvancar() {
         const teamsFromDB = await response.json();
 
         // Verifica o número de times no banco
-        if (teamsFromDB.length === 2 && localStorage.getItem('modoDeJogo') === '2 duplas') {
+        if (teamsFromDB.length/2 === 2 && localStorage.getItem('modoDeJogo') === '2 duplas') {
             window.location.href = 'gamePage.html'; // Redireciona para a página do jogo
         } else {
             alert(`Times encontrados: ${teamsFromDB.length}. Ainda não atingiu o limite para 2 duplas.`);
