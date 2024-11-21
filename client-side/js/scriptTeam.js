@@ -1,18 +1,17 @@
-const players = [];
-const teams = [];
 const divSemTime = document.getElementById('semTime');
 const divTeams = document.getElementById('teams');
 const inputNomeTime = document.getElementById('inputNomeTime');
 const confirmar = document.getElementById('confirmar');
 
+const players = [];
+const teams = [];
 const playersSelected = [];
 let teamIndexSelected = null;
 
 const modoDeJogo = localStorage.getItem('modoDeJogo');
 
-// Verifica se o valor foi recuperado corretamente
 if (modoDeJogo) {
-    console.log("Modo de jogo escolhido: " + modoDeJogo);  // Exibe no console para verificar
+    console.log("Modo de jogo escolhido: " + modoDeJogo);
     document.getElementById("modoEscolhido").textContent = `Modo de Jogo: ${modoDeJogo}`;
 } else {
     console.log("Nenhum modo de jogo foi selecionado.");
@@ -38,12 +37,14 @@ async function buscarTimes() {
 
         teams.length = 0;
         teamsFromDB.forEach(team => {
+            const members = team.players.map(player => ({
+                id: player.id,
+                username: player.username || 'Unknown'
+            }));
+
             teams.push({
                 nome: team.teamName,
-                members: [
-                    { id: team.players, username: team.players.username || 'Unknown' },
-                    { id: team.players.id, username: team.players.username || 'Unknown' },
-                ]
+                members
             });
         });
 
@@ -107,14 +108,27 @@ function renderTimes() {
 }
 
 function selecionarPlayer(player, element) {
-    if (playersSelected.includes(player)) {
-        playersSelected = playersSelected.filter(p => p !== player);
+    const index = playersSelected.indexOf(player);
+
+    if (index !== -1) {
+        playersSelected.splice(index, 1);
         element.classList.remove('selected');
-    } else if (playersSelected.length < 2) {
+    } else {
+        if (playersSelected.length === 2) {
+            const firstSelected = playersSelected.shift(); 
+            const firstElement = [...divSemTime.getElementsByClassName('player')].find(
+                el => el.textContent === firstSelected.username
+            );
+            if (firstElement) {
+                firstElement.classList.remove('selected'); 
+            }
+        }
+
         playersSelected.push(player);
         element.classList.add('selected');
     }
 }
+
 
 function selecionarTeam(index, element) {
     if (index === teamIndexSelected) {
@@ -157,15 +171,37 @@ document.getElementById('formarTime').addEventListener('click', async () => {
     }
 });
 
-document.getElementById('desfazerTime').addEventListener('click', () => {
+document.getElementById('desfazerTime').addEventListener('click', async () => {
     if (teamIndexSelected !== null) {
-        const removedTeam = teams.splice(teamIndexSelected, 1)[0];
-        players.push(...removedTeam.members);
-        teamIndexSelected = null;
-        renderTimes();
-        buscarSemTime();
+        const teamToRemove = teams[teamIndexSelected];
+
+        try {
+            const response = await fetch(`http://localhost:3001/api/teams/${teamToRemove.nome}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao excluir o time do banco.');
+            }
+
+            const result = await response.json();
+            console.log(result.message);
+
+            players.push(...teamToRemove.members);
+            teams.splice(teamIndexSelected, 1);
+            teamIndexSelected = null;
+
+            renderTimes();
+            buscarSemTime();
+        } catch (erro) {
+            console.error('Erro ao excluir time:', erro);
+            alert('Erro ao desfazer o time. Tente novamente.');
+        }
+    } else {
+        alert('Nenhum time selecionado para desfazer.');
     }
 });
+
 
 document.getElementById('renomearTime').addEventListener('click', () => {
     if (teamIndexSelected !== null) {

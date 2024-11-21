@@ -93,10 +93,10 @@ router.post("/", (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
-    const { id } = req.params;
-    const query = "DELETE FROM teams WHERE id = ?";
-    const params = [id];
+router.delete("/:name", (req, res) => {
+    const { name } = req.params;
+    const query = "DELETE FROM teams WHERE name = ?";
+    const params = [name];
     handleQuery(res, query, params, () => {
         res.json({ message: "Dupla excluída com sucesso!" });
     });

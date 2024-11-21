@@ -97,7 +97,7 @@ body {
     font-weight: bold;
 }
 
-.player.selected {
+.player .selected {
     background-color: #4682b4;
     color: white;
     transform: scale(1.05);
@@ -121,7 +121,7 @@ body {
     font-weight: bold;
 }
 
-.teams .selected {
+.selected {
     background-color: #4682b4;
     color: white;
     transform: scale(1.05);
