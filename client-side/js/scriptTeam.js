@@ -54,7 +54,62 @@ async function buscarTimes() {
     }
 }
 
+/* 
 
+
+const response = await fetch('http://localhost:3001/api/teams/ComTimes');
+if (!response.ok) throw new Error('Erro ao buscar times do banco de dados.');
+const teamsFromDB = await response.json();
+
+// Verifica o número de times no banco
+if (teamsFromDB.length 
+
+Depois conseguir a quantidade de items com isso
+*/
+
+
+async function salvarTimeNoBanco(team) {
+let quantidade_times = 0; // Mantenha essa variável para controlar a quantidade de times
+        
+        try {
+        const response = await fetch('http://localhost:3001/api/teams', {
+            method: 'POST',
+            headers: {
+        'Content-Type': 'application/json',
+        },
+            body: JSON.stringify({
+            name: team.nome,
+            player1_id: team.members[0].id,
+            player2_id: team.members[1].id,
+        }),
+    });
+        
+    if (!response.ok) throw new Error('Erro ao salvar o time no banco.');
+        
+    const data = await response.json();
+    console.log('Time salvo com sucesso:', data);
+
+    /*
+    A função salvar times no banco foi modificada para guardar o nome dos novos bancos
+    */
+        
+    // Salvar os nomes dos times no localStorage
+    if (quantidade_times === 1) {
+        localStorage.setItem('dupla1', team.nome); // Armazena o primeiro time
+    } else {
+        localStorage.setItem('dupla2', team.nome); // Armazena o segundo time
+    }
+                
+        quantidade_times++; // Incrementa a variável para o próximo time
+        return true;
+    } catch (erro) {
+        console.error('Erro ao salvar time:', erro);
+        return false;
+    }
+}
+
+
+/* Função antiga
 async function salvarTimeNoBanco(team) {
     try {
         const response = await fetch('http://localhost:3001/api/teams', {
@@ -78,6 +133,8 @@ async function salvarTimeNoBanco(team) {
         return false;
     }
 }
+
+*/
 
 function renderSemTimes(players) {
     divSemTime.innerHTML = '<h3>Players sem Time</h3>';

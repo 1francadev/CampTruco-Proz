@@ -53,6 +53,34 @@ async function enviarParaAPI(valor, duplaVencedora) {
   }
 }
 
+//document.addEventListener o documento é carregado junto com a pagina 
+
+document.addEventListener("DOMContentLoaded", () => {
+  const dupla1 = document.getElementById('dupla1');
+  const dupla2 = document.getElementById('dupla2');
+  
+  function renderTimes() {
+      // Lê os times do localStorage
+      const time1 = localStorage.getItem('dupla1');
+      const time2 = localStorage.getItem('dupla2');
+
+      // Exibe os nomes dos times
+      if (time1) {
+          dupla1.textContent = time1; // Exibe o nome do primeiro time
+      } else {
+          dupla1.textContent = 'Time 1'; // Caso não tenha nome no localStorage
+      }
+
+      if (time2) {
+          dupla2.textContent = time2; // Exibe o nome do segundo time
+      } else {
+          dupla2.textContent = 'Time 2'; // Caso não tenha nome no localStorage
+      }
+  }
+
+  renderTimes(); // Chama a função para rodar logo após o carregamento
+});
+
 // Função para iniciar uma nova partida
 function novaPartida() {
     pontuacaoDupla1 = 0;
