@@ -115,4 +115,10 @@ router.put("/:oldTeam", (req, res) => {
     });
 });
 
+router.post("/startGame", (req, res) => {
+    const { name } = req.body;
+
+    console.log(name)
+});
+
 module.exports = router;

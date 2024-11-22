@@ -54,87 +54,61 @@ async function buscarTimes() {
     }
 }
 
-/* 
+async function salvarTimeNoBanco(team, start) {
 
-
-const response = await fetch('http://localhost:3001/api/teams/ComTimes');
-if (!response.ok) throw new Error('Erro ao buscar times do banco de dados.');
-const teamsFromDB = await response.json();
-
-// Verifica o número de times no banco
-if (teamsFromDB.length 
-
-Depois conseguir a quantidade de items com isso
-*/
-
-
-async function salvarTimeNoBanco(team) {
-let quantidade_times = 0; // Mantenha essa variável para controlar a quantidade de times
-        
+    if (start === 'N') {
         try {
-        const response = await fetch('http://localhost:3001/api/teams', {
-            method: 'POST',
-            headers: {
-        'Content-Type': 'application/json',
-        },
-            body: JSON.stringify({
-            name: team.nome,
-            player1_id: team.members[0].id,
-            player2_id: team.members[1].id,
-        }),
-    });
-        
-    if (!response.ok) throw new Error('Erro ao salvar o time no banco.');
-        
-    const data = await response.json();
-    console.log('Time salvo com sucesso:', data);
+            console.log('line 61', start)
 
-    /*
-    A função salvar times no banco foi modificada para guardar o nome dos novos bancos
-    */
-        
-    // Salvar os nomes dos times no localStorage
-    if (quantidade_times === 1) {
-        localStorage.setItem('dupla1', team.nome); // Armazena o primeiro time
+            const response = await fetch('http://localhost:3001/api/teams', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: team.nome,  // A propriedade correta que contém o nome do time
+                    player1_id: team.members[0].id,
+                    player2_id: team.members[1].id,
+                }),
+            });
+
+            if (!response.ok) throw new Error('Erro ao salvar o time no banco.');
+
+            const data = await response.json();
+            console.log('Time salvo com sucesso:', data);
+            return true;
+        } catch (erro) {
+            console.error('Erro ao salvar time:', erro);
+            return false;
+        }
+    } else if (start === 'Y') {
+        try {
+            console.log('team:', team);
+
+            const response = await fetch('http://localhost:3001/api/teams/startGame', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: team.teamName,
+                }),
+            });
+
+            if (!response.ok) throw new Error('Erro ao iniciar o jogo.');
+
+            const data = await response.json();
+            console.log('Jogo iniciado com sucesso:', data);
+            return true;
+        } catch (erro) {
+            console.error('Erro ao iniciar jogo:', erro);
+            return false;
+        }
     } else {
-        localStorage.setItem('dupla2', team.nome); // Armazena o segundo time
-    }
-                
-        quantidade_times++; // Incrementa a variável para o próximo time
-        return true;
-    } catch (erro) {
-        console.error('Erro ao salvar time:', erro);
-        return false;
+        console.log("Erro ao passar o start", start)
     }
 }
 
-
-/* Função antiga
-async function salvarTimeNoBanco(team) {
-    try {
-        const response = await fetch('http://localhost:3001/api/teams', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: team.nome,
-                player1_id: team.members[0].id,
-                player2_id: team.members[1].id,
-            }),
-        });
-
-        if (!response.ok) throw new Error('Erro ao salvar o time no banco.');
-        const data = await response.json();
-        console.log('Time salvo com sucesso:', data);
-        return true;
-    } catch (erro) {
-        console.error('Erro ao salvar time:', erro);
-        return false;
-    }
-}
-
-*/
 
 function renderSemTimes(players) {
     divSemTime.innerHTML = '<h3>Players sem Time</h3>';
@@ -172,12 +146,12 @@ function selecionarPlayer(player, element) {
         element.classList.remove('selected');
     } else {
         if (playersSelected.length === 2) {
-            const firstSelected = playersSelected.shift(); 
+            const firstSelected = playersSelected.shift();
             const firstElement = [...divSemTime.getElementsByClassName('player')].find(
                 el => el.textContent === firstSelected.username
             );
             if (firstElement) {
-                firstElement.classList.remove('selected'); 
+                firstElement.classList.remove('selected');
             }
         }
 
@@ -213,7 +187,7 @@ document.getElementById('formarTime').addEventListener('click', async () => {
         const salvo = await salvarTimeNoBanco({
             nome: newTeam.nome,
             members: playersSelected,
-        });
+        }, 'N');
 
         if (salvo) {
             teams.push(newTeam);
@@ -307,9 +281,12 @@ async function verificarTimesEAvancar() {
         if (!response.ok) throw new Error('Erro ao buscar times do banco de dados.');
         const teamsFromDB = await response.json();
 
+        console.log('Line 284', teamsFromDB)
+
         // Verifica o número de times no banco
-        if (teamsFromDB.length/2 === 2 && localStorage.getItem('modoDeJogo') === '2 duplas') {
-            window.location.href = 'gamePage.html'; // Redireciona para a página do jogo
+        if (teamsFromDB.length === 2 && localStorage.getItem('modoDeJogo') === '2 duplas') {
+            salvarTimeNoBanco(teamsFromDB, "Y");
+            // window.location.href = 'gamePage.html';
         } else {
             alert(`Times encontrados: ${teamsFromDB.length}. Ainda não atingiu o limite para 2 duplas.`);
         }
