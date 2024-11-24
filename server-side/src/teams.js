@@ -115,10 +115,63 @@ router.put("/:oldTeam", (req, res) => {
     });
 });
 
-router.post("/startGame", (req, res) => {
-    const { name } = req.body;
+async function teamConsult(team1, team2) {
+    try {
+        if (!team1 || !team2) {
+            throw new Error('Os nomes dos times estão indefinidos.');
+        }
 
-    console.log(name)
+        const [teams1] = await db.promise().query("SELECT id FROM teams WHERE name = ?", [team1]);
+        const [teams2] = await db.promise().query("SELECT id FROM teams WHERE name = ?", [team2]);
+
+        if (!teams1.length || !teams2.length) {
+            throw new Error('Um ou ambos os times não foram encontrados no banco de dados.');
+        }
+
+        return {
+            team1_id: teams1[0].id,
+            team2_id: teams2[0].id,
+        };
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function verifyMatch(team1_id, team2_id) {
+    try {
+        const [match] = await db.promise().query(
+            "SELECT * FROM matches WHERE ((team1_id = ? AND team2_id = ?) OR (team1_id = ? AND team2_id = ?)) AND status = 'in_progress'",
+            [team1_id, team2_id, team2_id, team1_id]
+        );
+
+        return match.length === 0; // Retorna true se não houver partidas em andamento
+    } catch (err) {
+        throw err;
+    }
+}
+
+router.post("/startGame", async (req, res) => {
+    const { team1_name, team2_name } = req.body;
+
+    try {
+        const teams = await teamConsult(team1_name, team2_name);
+
+        const matchAvailable = await verifyMatch(teams.team1_id, teams.team2_id);
+
+        if (!matchAvailable) {
+            return res.status(400).json({ success: false, error: 'Jogo já iniciado.' });
+        }
+
+        const query = "INSERT INTO matches (team1_id, team2_id) VALUES (?, ?)";
+        const params = [teams.team1_id, teams.team2_id];
+
+        const [result] = await db.promise().query(query, params);
+
+        res.status(201).json({ success: true, message: 'Jogo iniciado com sucesso!' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ success: false, error: err.message });
+    }
 });
 
 module.exports = router;

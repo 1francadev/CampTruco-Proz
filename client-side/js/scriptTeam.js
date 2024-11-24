@@ -54,62 +54,6 @@ async function buscarTimes() {
     }
 }
 
-async function salvarTimeNoBanco(team, start) {
-
-    if (start === 'N') {
-        try {
-            console.log('line 61', start)
-
-            const response = await fetch('http://localhost:3001/api/teams', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: team.nome,  // A propriedade correta que contém o nome do time
-                    player1_id: team.members[0].id,
-                    player2_id: team.members[1].id,
-                }),
-            });
-
-            if (!response.ok) throw new Error('Erro ao salvar o time no banco.');
-
-            const data = await response.json();
-            console.log('Time salvo com sucesso:', data);
-            return true;
-        } catch (erro) {
-            console.error('Erro ao salvar time:', erro);
-            return false;
-        }
-    } else if (start === 'Y') {
-        try {
-            console.log('team:', team);
-
-            const response = await fetch('http://localhost:3001/api/teams/startGame', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: team.teamName,
-                }),
-            });
-
-            if (!response.ok) throw new Error('Erro ao iniciar o jogo.');
-
-            const data = await response.json();
-            console.log('Jogo iniciado com sucesso:', data);
-            return true;
-        } catch (erro) {
-            console.error('Erro ao iniciar jogo:', erro);
-            return false;
-        }
-    } else {
-        console.log("Erro ao passar o start", start)
-    }
-}
-
-
 function renderSemTimes(players) {
     divSemTime.innerHTML = '<h3>Players sem Time</h3>';
     players.forEach(player => {
@@ -211,8 +155,10 @@ document.getElementById('desfazerTime').addEventListener('click', async () => {
                 method: 'DELETE',
             });
 
+            const data = await response.json();
+
             if (!response.ok) {
-                throw new Error('Erro ao excluir o time do banco.');
+                throw new Error(data.error || 'Erro desconhecido ao iniciar o jogo.');
             }
 
             const result = await response.json();
@@ -273,27 +219,85 @@ confirmar.addEventListener('click', async () => {
     }
 });
 
-//modificar essa função quando alterar os modos de jogo;
+async function salvarTimeNoBanco(teams, start) {
+    try {
+        if (start === 'N') {
+            const response = await fetch('http://localhost:3001/api/teams', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: teams.nome,
+                    player1_id: teams.members[0].id,
+                    player2_id: teams.members[1].id,
+                }),
+            });
+
+            if (!response.ok) throw new Error('Erro ao salvar o time no banco.');
+
+            const data = await response.json();
+            console.log('Time salvo com sucesso:', data);
+            return { success: true, message: 'Time salvo no banco de dados.' };
+        }
+
+        if (start === 'Y') {
+            if (teams.length < 2) {
+                throw new Error('Não há times suficientes para iniciar o jogo.');
+            }
+
+            const response = await fetch('http://localhost:3001/api/teams/startGame', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    team1_name: teams[0].teamName,
+                    team2_name: teams[1].teamName,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Erro desconhecido ao iniciar o jogo.');
+            }
+
+            console.log('Jogo iniciado com sucesso:', data);
+            return data;
+        }
+    } catch (erro) {
+        console.error('Erro:', erro.message);
+        return { success: false, error: erro.message };
+    }
+}
 
 async function verificarTimesEAvancar() {
     try {
         const response = await fetch('http://localhost:3001/api/teams/ComTimes');
         if (!response.ok) throw new Error('Erro ao buscar times do banco de dados.');
+
         const teamsFromDB = await response.json();
 
-        console.log('Line 284', teamsFromDB)
+        if (teamsFromDB.length >= 2 && localStorage.getItem('modoDeJogo') === '2 duplas') {
+            const result = await salvarTimeNoBanco(teamsFromDB.slice(0, 2), "Y");
 
-        // Verifica o número de times no banco
-        if (teamsFromDB.length === 2 && localStorage.getItem('modoDeJogo') === '2 duplas') {
-            salvarTimeNoBanco(teamsFromDB, "Y");
-            // window.location.href = 'gamePage.html';
+            if (result.success) {
+                alert(result.message);
+                window.location.href = 'gamePage.html';
+            } else {
+                alert(result.error);
+            }
         } else {
-            alert(`Times encontrados: ${teamsFromDB.length}. Ainda não atingiu o limite para 2 duplas.`);
+            alert(`Times encontrados: ${teamsFromDB.length}. Não há times suficientes para começar o jogo.`);
         }
     } catch (erro) {
-        console.error("Erro ao buscar dados das APIs:", erro);
+        console.error('Erro ao verificar os times e avançar:', erro.message);
+        alert(erro.message);
     }
 }
+
+
 
 document.getElementById('comecarJogo').addEventListener('click', verificarTimesEAvancar);
 

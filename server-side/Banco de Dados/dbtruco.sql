@@ -29,10 +29,11 @@ CREATE TABLE matches (
     winner_team_id INT DEFAULT NULL,
     started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ended_at TIMESTAMP NULL,
-    FOREIGN KEY (team1_id) REFERENCES teams(id),
-    FOREIGN KEY (team2_id) REFERENCES teams(id),
-    FOREIGN KEY (winner_team_id) REFERENCES teams(id)
+    FOREIGN KEY (team1_id) REFERENCES teams(id) ON DELETE CASCADE,
+    FOREIGN KEY (team2_id) REFERENCES teams(id) ON DELETE CASCADE,
+    FOREIGN KEY (winner_team_id) REFERENCES teams(id) ON DELETE SET NULL
 );
+
 
 CREATE TABLE scores (
     id INT AUTO_INCREMENT PRIMARY KEY,
