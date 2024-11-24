@@ -155,12 +155,6 @@ document.getElementById('desfazerTime').addEventListener('click', async () => {
                 method: 'DELETE',
             });
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error || 'Erro desconhecido ao iniciar o jogo.');
-            }
-
             const result = await response.json();
             console.log(result.message);
 
@@ -282,12 +276,15 @@ async function verificarTimesEAvancar() {
         if (teamsFromDB.length >= 2 && localStorage.getItem('modoDeJogo') === '2 duplas') {
             const result = await salvarTimeNoBanco(teamsFromDB.slice(0, 2), "Y");
 
+            const matchId = result.matchId;
+
             if (result.success) {
                 alert(result.message);
-                window.location.href = 'gamePage.html';
+                window.location.href = `gamePage.html?matchId=${matchId}`;
             } else {
                 alert(result.error);
             }
+
         } else {
             alert(`Times encontrados: ${teamsFromDB.length}. Não há times suficientes para começar o jogo.`);
         }

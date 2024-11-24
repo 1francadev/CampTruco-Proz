@@ -24,7 +24,7 @@ async function TeamsFilter(api, callback) {
 
         teams.forEach(team => {
             const player1Name = userMap.get(team.player1_id);
-            const player2Name = userMap.get(team.player2_id);            
+            const player2Name = userMap.get(team.player2_id);
 
             playersComTime.push({
                 teamName: team.name,
@@ -166,8 +166,10 @@ router.post("/startGame", async (req, res) => {
         const params = [teams.team1_id, teams.team2_id];
 
         const [result] = await db.promise().query(query, params);
+        const matchId = result.insertId;
+        console.log("start game", matchId)
 
-        res.status(201).json({ success: true, message: 'Jogo iniciado com sucesso!' });
+        res.status(201).json({ success: true, message: 'Jogo iniciado com sucesso!', matchId: matchId });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ success: false, error: err.message });
