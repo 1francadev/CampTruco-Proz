@@ -1,0 +1,82 @@
+/* Estilo geral */
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: black; /* Vermelho intenso */
+    font-family: Arial, sans-serif;
+}
+
+/* Container dos botões */
+.game-options {
+    display: flex;
+    gap: 40px;
+}
+
+/* Estilo dos botões */
+
+/* Botão ajustado */
+.game-button {
+    position: relative;
+    width: 280px;
+    border: 5px solid #fff;
+    border-radius: 15px;
+    overflow: hidden; /* Não corta mais o texto */
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column; /* Organiza conteúdo em coluna */
+    align-items: center; /* Centraliza horizontalmente */
+}
+
+/* Imagem */
+.game-button img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Legenda */
+.game-button p {
+    margin: 10px 0 0; /* Margem para afastar do botão */
+    font-size: 18px;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
+    width: 100%; /* Ocupa a largura do botão */
+    text-align: center; /* Centraliza o texto */
+    padding: 5px;
+    box-sizing: border-box; /* Inclui padding na largura */
+}
+
+.game-button:hover {
+    transform: scale(1.1); /* Zoom ao passar o mouse */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+}
+
+/* Container geral */
+.content {
+    display: flex;
+    flex-direction: column; /* Alinha itens na vertical */
+    justify-content: center; /* Centraliza verticalmente */
+    align-items: center; /* Centraliza horizontalmente */
+    height: 100vh; /* Ocupa a tela toda */
+}
+
+/* Título da página com fundo */
+.page-title {
+    font-size: 45px;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px; /* Espaço entre o título e os botões */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Sombra no texto */
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo preto com opacidade */
+    padding: 10px 20px; /* Espaçamento interno */
+    border: 2px solid #fff; /* Borda branca */
+    border-radius: 10px; /* Bordas arredondadas */
+    display: inline-block; /* Tamanho ajustado ao conteúdo */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Sombra da caixa */
+}
