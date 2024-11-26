@@ -26,12 +26,6 @@ function enviarDados(url, metodo, dados, mensagemSucesso, mensagemErro, callback
         })
 }
 
-/*
-Essa função vai ser usada no proprio arquivo que ela está. Basicamente é uma função que envia os dados para o banco
-
-Se você ver ela na outras funções vai entender como funciona.
-*/
-
 document.getElementById("loginForm").addEventListener("submit", function(event) {
     event.preventDefault();
     const username = document.getElementById("username").value;
@@ -54,14 +48,6 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
         }
     );
 });
-
-
-/* 
-Esse get element by id pega o login de um formulario. Por causa do eventlistener submit, as informações do formulario
-serão pegas quando ele for enviado.
-
-O formulario pegara as informações como o "username" e o password e verifica se tem no banco, se tiver faz o login.
-*/
 
 document.getElementById("SingupForm").addEventListener("submit", function(event) {
     event.preventDefault();
@@ -93,11 +79,6 @@ document.getElementById("SingupForm").addEventListener("submit", function(event)
     );
 });
 
-
-/* 
-Aqui pegamos o name, email e pass e adicionamos no banco de dados se tiver tudo configurado certinho.
-*/
-
 document.getElementById("admForm").addEventListener("submit", function(event) {
     event.preventDefault();
     const Useradm = document.getElementById("Useradm").value;
@@ -113,18 +94,13 @@ document.getElementById("admForm").addEventListener("submit", function(event) {
         'Login realizado com sucesso!', 'Erro ao realizar o login!',
         function(success) {
             if (success) {
-                window.location.href = "optionPage.html";
+                window.location.href = "adminPage.html";
             } else {
                 errorMessage3.textContent = "Login ou senha incorretos!";
             }
         }
     );
 });
-
-/* 
-Aqui pegamos o name, email e pass e adicionamos no banco de dados se tiver tudo configurado certinho.
-
-*/
 
 function navigate(state) {
     const Login = document.querySelector(".loginForm");
@@ -139,13 +115,6 @@ function navigate(state) {
     }
 }
 
-
-/* 
-Esse aqui parece que é para aparecer a tela de login e cadastro
-
-*/
-
-// Modal
 const button = document.querySelector(".buttonadm");
 const modal = document.querySelector(".dialog");
 const closebutton = document.querySelector(".btnclose");
@@ -157,8 +126,3 @@ button.onclick = function () {
 closebutton.onclick = function () {
     modal.close();
 };
-
-/* 
-Aqui é para abrir e fechar o botão de adm
-
-*/

@@ -1,0 +1,109 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #000000;
+    background-image: linear-gradient(45deg, #271212 25%, transparent 25%), linear-gradient(-45deg, #271212 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #271212 75%), linear-gradient(-45deg, transparent 75%, #271212 75%);
+    background-size: 50px 50px;
+    color: white;
+}
+
+.container {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    align-items: flex-start;
+    width: 50%;
+    padding: 20px;
+}
+
+.buttons {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: flex-start;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 8px;
+    color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.button {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.button:hover {
+    background-color: #a62828;
+    transform: scale(1.05);
+}
+
+.content {
+    flex: 2;
+    background-color: #222;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    min-height: 300px;
+}
+
+.hidden {
+    display: none;
+}
+
+#titulo {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Estilos gerais para o contêiner de partidas */
+#matchList {
+    display: flex; /* Usar flexbox para melhor controle */
+    flex-direction: column; /* Colocar os itens em coluna */
+    gap: 20px; /* Espaçamento entre os itens */
+    padding: 20px; /* Espaçamento interno */
+    background-color: #f9f9f9; /* Cor de fundo leve */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra leve */
+}
+
+/* Estilos para cada item de partida */
+.match-item {
+    background-color: #ffffff; /* Cor de fundo branca */
+    border: 1px solid #e0e0e0; /* Borda leve */
+    border-radius: 5px; /* Bordas arredondadas */
+    padding: 15px; /* Espaçamento interno */
+    transition: box-shadow 0.3s; /* Efeito de transição para sombra */
+}
+
+/* Efeito de hover para os itens */
+.match-item:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra mais forte ao passar o mouse */
+}
+
+/* Estilos para os parágrafos dentro do item de partida */
+.match-item p {
+    margin: 5px 0; /* Margem entre os parágrafos */
+    font-size: 14px; /* Tamanho da fonte */
+    color: #333; /* Cor do texto */
+}

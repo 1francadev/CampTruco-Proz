@@ -7,18 +7,18 @@ const buttonModo6Duplas = document.getElementById("modo6Duplas");
 buttonModo2Duplas.addEventListener("click", function() {
     // Armazena o modo de jogo no localStorage
     localStorage.setItem('modoDeJogo', '2 duplas');
-    window.location.href = 'teamPage.html'; 
+    window.location.href = 'teamPage.html';
 });
 
 /*
 buttonModo4Duplas.addEventListener("click", function() {
     localStorage.setItem('modoDeJogo', '4 duplas');
-    window.location.href = 'teamPage.html'; 
+    window.location.href = 'teamPage.html';
 });
 
 buttonModo6Duplas.addEventListener("click", function() {
     localStorage.setItem('modoDeJogo', '6 duplas');
-    window.location.href = 'teamPage.html'; 
+    window.location.href = 'teamPage.html';
 });
 
 */

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - Truco Mineiro</title>
+    <link rel="stylesheet" href="css/styleAdmin.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="buttons" id="buttons">
+            <h3 id="titulo">Painel Administrativo</h3>
+            <button id="createTeams" class="button">Criação de Times</button>
+            <button id="manageMatches" class="button">Gerenciar Partidas</button>
+            <button id="logout" class="button">Sair</button>
+        </div>
+
+        <div class="content" id="content" style="display: none;">
+            <div id="matchesSection">
+                <h3>Partidas</h3>
+                <div id="matchList" class="matches-container">
+                    <!-- ai as partida aparece aqui zé -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/scriptAdmin.js"></script>
+</body>
+
+</html>
