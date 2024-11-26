@@ -41,7 +41,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
         'Login realizado com sucesso!', 'Erro ao realizar o login!',
         function(success) {
             if (success) {
-                window.location.href = "gamePage.html";
+                window.location.href = "lobbyPage.html";
             } else {
                 errorMessage.textContent = "Login ou senha incorretos!";
             }

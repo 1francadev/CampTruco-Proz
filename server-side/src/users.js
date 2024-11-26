@@ -26,6 +26,12 @@ router.get('/:id', (req, res) => {
   });
 });
 
+router.get('/nameid/:id', (req, res) => {
+  handleQuery(res, "SELECT username FROM users WHERE id = ?", req.params.id, results => {
+    res.json({ data: { success: true, results } });
+  });
+});
+
 router.put('/:id', (req, res) => {
   const { email, username, password } = req.body;
   const params = [username, email, password, req.params.id];

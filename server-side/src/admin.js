@@ -34,6 +34,15 @@ router.get("/matches", (req, res) => {
     });
 });
 
+router.delete("/matches/:matchId", (req, res) => {
+    const { matchId } = req.params;
+    const query = "DELETE FROM matches WHERE id = ?";
+    const params = [matchId];
+    handleQuery(res, query, params, () => {
+        res.json({ data : { success: true, message: "Partida Excluida com Sucesso!" }});
+    });
+});
+
 async function teamConsult2(team1_id, team2_id) {
     try {
         if (!team1_id || !team2_id) {

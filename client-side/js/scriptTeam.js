@@ -30,22 +30,60 @@ async function buscarSemTime() {
 
 async function buscarTimes() {
     try {
-        const response = await fetch('http://localhost:3001/api/teams/ComTimes');
-        if (!response.ok) throw new Error('Erro ao buscar times do banco de dados.');
-        const teamsFromDB = await response.json();
-        console.log(teamsFromDB)
+        const response = await fetch('http://localhost:3001/api/teams');
+        if (!response.ok) throw new Error('Erro ao buscar todos os times do banco de dados.');
+        const allTeams = await response.json();
+        console.log(allTeams);
+
+        const matchesResponse = await fetch('http://localhost:3001/api/admin/matches');
+        if (!matchesResponse.ok) throw new Error('Erro ao buscar partidas em andamento.');
+        const matchesData = await matchesResponse.json();
+        console.log(matchesData);
+
+        const teamsInMatchIds = new Set();
+        matchesData.data.matches.forEach(match => {
+            teamsInMatchIds.add(match.team1_id);
+            teamsInMatchIds.add(match.team2_id);
+        });
 
         teams.length = 0;
-        teamsFromDB.forEach(team => {
-            const members = team.players.map(player => ({
-                id: player.id,
-                username: player.username || 'Unknown'
-            }));
 
-            teams.push({
-                nome: team.teamName,
-                members
-            });
+        const playerNamePromises = allTeams.map(async (team) => {
+            const members = [];
+            if (team.player1_id) {
+                const player1Response = await fetch(`http://localhost:3001/api/users/nameid/${team.player1_id}`);
+                if (player1Response.ok) {
+                    const player1Data = await player1Response.json();
+                    if (player1Data.data.results.length > 0) {
+                        members.push({ id: team.player1_id, username: player1Data.data.results[0].username });
+                    }
+                }
+            }
+            if (team.player2_id) {
+                const player2Response = await fetch(`http://localhost:3001/api/users/nameid/${team.player2_id}`);
+                if (player2Response.ok) {
+                    const player2Data = await player2Response.json();
+                    if (player2Data.data.results.length > 0) {
+                        members.push({ id: team.player2_id, username: player2Data.data.results[0].username });
+                    }
+                }
+            }
+
+            if (!teamsInMatchIds.has(team.id)) {
+                return {
+                    nome: team.name,
+                    members
+                };
+            }
+            return null;
+        });
+
+        const teamsWithMembers = await Promise.all(playerNamePromises);
+
+        teamsWithMembers.forEach(team => {
+            if (team) {
+                teams.push(team);
+            }
         });
 
         renderTimes();

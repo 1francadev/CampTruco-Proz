@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lobby - Truco Camp</title>
+    <link rel="stylesheet" href="css/styleLobby.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div>
+                <img src="assets/img/LogoCamp.png" width="50px" class="Logo" alt="Logo">
+            </div>
+            <div>
+                <button class="logout-button" onclick="logout()"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Deslogar</button>
+            </div>
+        </div>
+
+        <div class="lobby">
+            <h1>Bem-vindo ao Lobby do Truco Camp!</h1>
+
+            <div class="online-games">
+                <h2>Partidas Online Disponíveis</h2>
+                <ul id="gameList">
+                    <li>Sem partidas no momento!</li>
+                </ul>
+                <button class="join-game" onclick="joinGame()">Entrar em uma Partida</button>
+            </div>
+
+            <div class="news-section">
+                <h2>Notícias</h2>
+                <div class="news-item">
+                    <h3>Atualização de Balanceamento de Cartas</h3>
+                    <p>Uma nova atualização foi lançada para balancear as cartas. Confira as mudanças no nosso site!</p>
+                </div>
+                <div class="news-item">
+                    <h3>Torneio de Truco Camp em Breve!</h3>
+                    <p>Prepare-se para o torneio anual de Truco Camp! As inscrições começam na próxima semana.</p>
+                </div>
+                <div class="news-item">
+                    <h3>Novo Modo de Jogo Adicionado!</h3>
+                    <p>Experimente o novo modo "Truco Rápido", onde as partidas são mais dinâmicas e emocionantes!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/scriptLobby.js"></script>
+</body>
+
+</html>

@@ -76,34 +76,80 @@ body {
     margin-bottom: 20px;
 }
 
-/* Estilos gerais para o contêiner de partidas */
 #matchList {
-    display: flex; /* Usar flexbox para melhor controle */
-    flex-direction: column; /* Colocar os itens em coluna */
-    gap: 20px; /* Espaçamento entre os itens */
-    padding: 20px; /* Espaçamento interno */
-    background-color: #f9f9f9; /* Cor de fundo leve */
-    border-radius: 8px; /* Bordas arredondadas */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para cada item de partida */
 .match-item {
-    background-color: #ffffff; /* Cor de fundo branca */
-    border: 1px solid #e0e0e0; /* Borda leve */
-    border-radius: 5px; /* Bordas arredondadas */
-    padding: 15px; /* Espaçamento interno */
-    transition: box-shadow 0.3s; /* Efeito de transição para sombra */
+    display: flex;
+    background-color: #333;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    padding: 15px;
+    transition: box-shadow 0.3s;
+    justify-content: space-between;
 }
 
-/* Efeito de hover para os itens */
 .match-item:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra mais forte ao passar o mouse */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilos para os parágrafos dentro do item de partida */
 .match-item p {
-    margin: 5px 0; /* Margem entre os parágrafos */
-    font-size: 14px; /* Tamanho da fonte */
-    color: #333; /* Cor do texto */
+    margin: 5px 0;
+    font-size: 15px;
+    color: #ffffff;
+}
+
+.march-item .btns {
+    display: flex;
+    margin: 0;
+}
+
+.march-item .info {
+    display: flex;
+    margin: 0;
+}
+
+.match-item .buttonMatch {
+    width: 5vw;
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.match-item .buttonMatchDelete {
+    width: 5vw;
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+
+.backButton {
+    width: 5vw;
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.tituloMatch {
+    font-size: 25px;
+    text-align: center;
+    padding: 20px;
 }

@@ -21,6 +21,10 @@ body {
     pointer-events: none;
 }
 
+.login {
+    margin: 8vh;
+}
+
 /* Login Container */
 .login-container {
     display: flex;

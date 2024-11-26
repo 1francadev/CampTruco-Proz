@@ -5,14 +5,20 @@ const logoutButton = document.getElementById('logout');
 const matchesSection = document.querySelector('.content');
 const buttonsSection = document.querySelector('.buttons');
 const matchList = document.getElementById('matchList');
+const backButton = document.getElementById('backButton')
 
 createTeamsButton.addEventListener('click', () => {
     window.location.href = 'optionPage.html';
 });
 
+backButton.addEventListener('click', () => {
+    buttonsSection.style.display = "flex";
+    matchesSection.style.display = "none";
+});
+
 manageMatchesButton.addEventListener('click', () => {
     buttonsSection.style.display = "none";
-    matchesSection.style.display = "flex";
+    matchesSection.style.display = "block";
     loadmatches();
 });
 
@@ -57,13 +63,20 @@ async function displayMatches(matches) {
         }
 
         matchItem.innerHTML = `
-            <p>ID: ${match.id}</p>
-            <p>Time 1: ${teamsName.data.teams.team1_name} (ID: ${match.team1_id})</p>
-            <p>Time 2: ${teamsName.data.teams.team2_name} (ID: ${match.team2_id})</p>
-            <p>Status: ${matchStatus}</p>
-            <p>Iniciado em: ${new Date(match.started_at).toLocaleString()}</p>
-            ${match.ended_at ? `<p>Finalizado em: ${new Date(match.ended_at).toLocaleString()}</p>` : ''}
+            <div class="info">
+                <p>ID da Partida: ${match.id}</p>
+                <p>Time 1: ${teamsName.data.teams.team1_name} (ID: ${match.team1_id})</p>
+                <p>Time 2: ${teamsName.data.teams.team2_name} (ID: ${match.team2_id})</p>
+                <p>Status: ${matchStatus}</p>
+                <p>Iniciado em: ${new Date(match.started_at).toLocaleString()}</p>
+                ${match.ended_at ? `<p>Finalizado em: ${new Date(match.ended_at).toLocaleString()}</p>` : ''}
+            </div>
+            <div class="btns">
+                <div id="buttonMatch" class="buttonMatch" onclick="matchEnter(${match.id})">Entrar</div>
+                <div id="buttonMatchDelete" class="buttonMatchDelete" onclick="deleteMatch(${match.id})">Deletar</div>
+            </div>
         `;
+
         matchList.appendChild(matchItem);
     }
 }
@@ -86,4 +99,37 @@ async function getTeamNameById(team1_id, team2_id) {
     console.log("Dados recebidos:", data);
 
     return data;
+}
+
+function matchEnter(matchId) {
+    console.log("Entrando na partida com ID", matchId)
+    window.open (`gamePage.html?matchId=${matchId}`, '_blank');
+}
+
+async function deleteMatch(matchId) {
+    if (confirm('Tem certeza que deseja deletar a partida?')) {
+        try {
+            const response = await fetch(`http://localhost:3001/api/admin/matches/${matchId}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao deletar a partida.');
+            }
+
+            const data = await response.json();
+            console.log(data)
+
+            if (data.data.success) {
+                alert('Partida deletada com sucesso.');
+                loadmatches();
+            } else {
+                alert('Partida não deletada.');
+            }
+
+        } catch (error) {
+            console.error('Erro ao deletar a partida:', error);
+            alert("Erro ao deletar a partida.");
+        }
+    }
 }
